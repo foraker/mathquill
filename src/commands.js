@@ -268,7 +268,9 @@ LatexCmds['√'] = P(MathCommand, function(_, _super) {
   };
   _.redraw = function() {
     var block = this.ends[R].jQ;
-    scale(block.prev(), 1, block.innerHeight()/+block.css('fontSize').slice(0,-2) - .1);
+    var yScale = block.innerHeight()/+block.css('fontSize').slice(0,-2) - .1;
+    if (yScale < 0) { yScale = 1; }
+    scale(block.prev(), 1, yScale);
   };
 });
 
