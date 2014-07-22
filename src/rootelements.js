@@ -87,7 +87,12 @@ function createRoot(jQ, root, textbox, editable) {
 
       // delete the mouse handlers now that we're not dragging anymore
       jQ.unbind('mousemove', mousemove);
-      $(e.target.ownerDocument).unbind('mousemove', docmousemove).unbind('mouseup', mouseup);
+      // get the document containing mathquill and unbind events
+      jQ.parents('html').parent().unbind('mousemove', docmousemove).unbind('mouseup', mouseup);
+      // if we're in an iframe, unbind from that document
+      if (window.top) {
+        $(window.top.document).unbind('mouseup', mouseup);
+      }
     }
 
     setTimeout(function() { textarea.focus(); textarea.focused = true; });
@@ -105,6 +110,14 @@ function createRoot(jQ, root, textbox, editable) {
 
     jQ.mousemove(mousemove);
     $(e.target.ownerDocument).mousemove(docmousemove).mouseup(mouseup);
+
+    // if in an iframe, bind to parent document as well.
+    // otherwise, if you click and move your cursor out of the iframe
+    // and then delete your selection, the mousemove event will blow
+    // up when you move the mouse back on the iframe document
+    if (window.top) {
+      $(window.top.document).mouseup(mouseup);
+    }
 
     return false;
   });
