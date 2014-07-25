@@ -287,6 +287,7 @@ var Vec = LatexCmds.vec = P(MathCommand, function(_, _super) {
 
 var NthRoot =
 LatexCmds.nthroot = P(SquareRoot, function(_, _super) {
+  _.ctrlSeq = '\\nthroot';
   _.htmlTemplate =
       '<sup class="nthroot non-leaf">&0</sup>'
     + '<span class="scaled">'
@@ -297,6 +298,22 @@ LatexCmds.nthroot = P(SquareRoot, function(_, _super) {
   _.textTemplate = ['sqrt[', '](', ')'];
   _.latex = function() {
     return '\\sqrt['+this.ends[L].latex()+']{'+this.ends[R].latex()+'}';
+  };
+});
+
+var ThirdRoot =
+LatexCmds.thirdroot = P(SquareRoot, function(_, _super) {
+  _.ctrlSeq = '\\thirdroot';
+  _.htmlTemplate =
+      '<sup class="nthroot non-leaf">3</sup>'
+    + '<span class="scaled">'
+    +   '<span class="sqrt-prefix scaled">&radic;</span>'
+    +   '<span class="sqrt-stem non-leaf">&0</span>'
+    + '</span>'
+  ;
+  _.textTemplate = ['sqrt[3](', ')'];
+  _.latex = function() {
+    return '\\sqrt[3]{'+this.ends[R].latex()+'}';
   };
 });
 
